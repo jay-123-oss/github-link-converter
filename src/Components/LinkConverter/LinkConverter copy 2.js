@@ -4,21 +4,23 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { Paper, TextField, Button, Grid } from '@material-ui/core';
 
-const ghPagesRegex = /github\.io/;
-const ghLinkRegex = /github\.com/;
-const ghCombinedRegex = /github\.(io|com)/;
-
 class LinkConverter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputURL: 'www.github.com',
+      inputURL: '',
       convertedURL: '',
-      allowConvert: false
+      allowConvert: false,
+      buttonDisabled: true
     };
   }
 
-  inputValidation = inputURL => ghCombinedRegex.test(inputURL);
+  inputValidation = inputURL => {
+    const ghPagesRegex = /github\.io/;
+    const ghLinkRegex = /github\.com/;
+
+    return ghLinkRegex.test(inputURL) || ghPagesRegex.test(inputURL);
+  };
 
   handleChange = event => {
     const {
@@ -33,7 +35,10 @@ class LinkConverter extends React.Component {
   };
 
   convertURL = () => {
-    const inputURL = this.state.inputURL.slice(0);
+    const ghPagesRegex = /github\.io/;
+    const ghLinkRegex = /github\.com/;
+
+    const inputURL = this.state.inputURL;
     console.log(inputURL);
   };
 
@@ -56,7 +61,6 @@ class LinkConverter extends React.Component {
                     label="Enter URL"
                     // placeholder="https://github.com/martink-rsa/github-link-converter"
                     variant="outlined"
-                    autoFocus
                     fullWidth
                     value={this.state.inputURL}
                     onChange={this.handleChange}
@@ -71,19 +75,21 @@ class LinkConverter extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.convertURL}
-                    disabled={!this.state.allowConvert}
-                  >
-                    Convert URL
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    disabled={!this.state.allowConvert}
-                  >
+                  {this.state.allowConvert ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.convertURL}
+                      disabled={this.state.buttonDisabled}
+                    >
+                      Convert URL
+                    </Button>
+                  ) : (
+                    <Button variant="contained" color="primary" disabled>
+                      Convert URL
+                    </Button>
+                  )}
+                  <Button variant="contained" color="secondary">
                     Convert &amp; Go
                   </Button>
                 </Grid>
