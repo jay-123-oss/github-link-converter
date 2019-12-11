@@ -1,6 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import logo from './logo.svg';
 import './App.css';
 import Header from '../Header/Header';
 import LinkConverter from '../LinkConverter/LinkConverter';

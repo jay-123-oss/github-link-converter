@@ -2,19 +2,33 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import { Paper, TextField, Button, Grid } from '@material-ui/core';
+import { Paper, TextField, Button, Grid, Link } from '@material-ui/core';
+
+/*
+TEST STRINGS:
+martink-rsa.github.io/library
+martink-rsa.github.io/library/newpage
+https://martink-rsa.github.io/library
+
+https://www.github.com/martink-rsa/library
+https://www.github.com/martink-rsa/library/newpage
+*/
 
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
 const ghCombinedRegex = /github\.(io|com)/;
+const ghPagesGroupedRegex = /^(https?:\/\/)?([a-zA-Z0-9-]*)(\.github.io)(\/[a-zA-Z0-9-_/]*)/;
+// const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github.io)(\/[a-zA-Z0-9\-\_\/]*)/;
+const ghRepoGroupedRegex = /^(https?:\/\/(www.)?)(github.com\/)([a-zA-Z0-9-]*)(\/[a-zA-Z0-9-_/]*)/;
+// const ghRepoGroupedRegex = /^(https?\:\/\/(www.)?)(github.com\/)([a-zA-Z0-9\-]*)(\/[a-zA-Z0-9\-\_\/]*)/;
 
 class LinkConverter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputURL: 'www.github.com',
+      inputURL: '', // Set to empty for default
       convertedURL: '',
-      allowConvert: false
+      allowConvert: false, // Set to false for default
     };
   }
 
@@ -22,19 +36,36 @@ class LinkConverter extends React.Component {
 
   handleChange = event => {
     const {
-      target: { value: inputURL }
+      target: { value: inputURL },
     } = event;
     this.setState(() => {
       return {
         inputURL,
-        allowConvert: this.inputValidation(inputURL)
+        allowConvert: this.inputValidation(inputURL),
       };
     });
   };
 
   convertURL = () => {
     const inputURL = this.state.inputURL.slice(0);
-    console.log(inputURL);
+    if (inputURL.match(ghPagesRegex)) {
+      const username = inputURL.match(ghPagesGroupedRegex)[2];
+      const folders = inputURL.match(ghPagesGroupedRegex)[4];
+      const newURL = `https://www.github.com/${username}${folders}`;
+      console.log(newURL);
+      this.setState({ convertedURL: newURL });
+    } else if (inputURL.match(ghLinkRegex)) {
+      console.log('GitHub Repo Convert');
+      const username = inputURL.match(ghRepoGroupedRegex)[4];
+      const folders = inputURL.match(ghRepoGroupedRegex)[5];
+      const newURL = `https://${username}.github.io${folders}`;
+      console.log(newURL);
+      this.setState({ convertedURL: newURL });
+    }
+  };
+
+  openLink = () => {
+    this.convertURL();
   };
 
   render() {
@@ -68,6 +99,7 @@ class LinkConverter extends React.Component {
                     label="Result"
                     variant="outlined"
                     fullWidth
+                    value={this.state.convertedURL}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -79,13 +111,20 @@ class LinkConverter extends React.Component {
                   >
                     Convert URL
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    disabled={!this.state.allowConvert}
+                  <Link
+                    href={this.state.convertedURL}
+                    target="_blank"
+                    rel="noopener"
                   >
-                    Convert &amp; Go
-                  </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      disabled={!this.state.allowConvert}
+                      onClick={this.openLink}
+                    >
+                      Convert &amp; Go
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </Paper>
