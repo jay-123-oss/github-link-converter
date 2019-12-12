@@ -28,20 +28,22 @@ class LinkConverter extends React.Component {
     this.state = {
       inputURL: '', // Set to empty for default
       convertedURL: '',
-      allowConvert: false, // Set to false for default
+      allowConvert: false // Set to false for default
     };
   }
 
-  inputValidation = inputURL => ghCombinedRegex.test(inputURL);
+  inputValidation = inputURL => {
+    return ghCombinedRegex.test(inputURL);
+  };
 
   handleChange = event => {
     const {
-      target: { value: inputURL },
+      target: { value: inputURL }
     } = event;
     this.setState(() => {
       return {
         inputURL,
-        allowConvert: this.inputValidation(inputURL),
+        allowConvert: this.inputValidation(inputURL)
       };
     });
   };
@@ -104,6 +106,7 @@ class LinkConverter extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                    margin={10}
                     variant="contained"
                     color="primary"
                     onClick={this.convertURL}

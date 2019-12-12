@@ -6,27 +6,32 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: '#a6623f',
-      contrastText: '#fff',
+      contrastText: '#fff'
     },
     secondary: {
-      main: '#a1a19a',
+      main: '#a1a19a'
     },
     error: {
-      main: red.A400,
+      main: red.A400
     },
     background: {
-      default: '#322e2f',
-    },
+      default: '#322e2f'
+    }
   },
   overrides: {
     MuiPaper: {
       root: {
         padding: '20px 10px',
         marginBottom: '10px',
-        backgroundColor: '#fff', // 5d737e
-      },
+        backgroundColor: '#fff' // 5d737e
+      }
     },
-  },
+    MuiButton: {
+      root: {
+        margin: '5px'
+      }
+    }
+  }
 });
 
 export default theme;
