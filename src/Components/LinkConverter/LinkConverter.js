@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -10,17 +11,16 @@ martink-rsa.github.io/library
 martink-rsa.github.io/library/newpage
 https://martink-rsa.github.io/library
 
+github.com/martink-rsa/library
+github.com/martink-rsa/library/newpage/
 https://www.github.com/martink-rsa/library
 https://www.github.com/martink-rsa/library/newpage
 */
 
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
-const ghCombinedRegex = /github\.(io|com)/;
-const ghPagesGroupedRegex = /^(https?:\/\/)?([a-zA-Z0-9-]*)(\.github.io)(\/[a-zA-Z0-9-_/]*)/;
-// const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github.io)(\/[a-zA-Z0-9\-\_\/]*)/;
-const ghRepoGroupedRegex = /^(https?:\/\/(www.)?)(github.com\/)([a-zA-Z0-9-]*)(\/[a-zA-Z0-9-_/]*)/;
-// const ghRepoGroupedRegex = /^(https?\:\/\/(www.)?)(github.com\/)([a-zA-Z0-9\-]*)(\/[a-zA-Z0-9\-\_\/]*)/;
+const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github.io)(\/)([a-zA-Z0-9\-\_\/]*)/;
+const ghRepoGroupedRegex = /^(https?\:\/\/(www.)?)?(github.com\/)([a-zA-Z0-9\-]*)(\/[a-zA-Z0-9\-\_\/]*)/;
 
 class LinkConverter extends React.Component {
   constructor(props) {
@@ -32,18 +32,18 @@ class LinkConverter extends React.Component {
     };
   }
 
-  inputValidation = inputURL => {
-    return ghCombinedRegex.test(inputURL);
-  };
+  inputValidation = inputURL =>
+      ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL);
 
   handleChange = event => {
     const {
       target: { value: inputURL }
     } = event;
-    this.setState(() => {
+    this.setState((previousState) => {
+      console.log(previousState.inputURL);
       return {
-        inputURL,
-        allowConvert: this.inputValidation(inputURL)
+        inputURL: inputURL.trim(),
+        allowConvert: this.inputValidation(inputURL.trim()),
       };
     });
   };
@@ -52,16 +52,13 @@ class LinkConverter extends React.Component {
     const inputURL = this.state.inputURL.slice(0);
     if (inputURL.match(ghPagesRegex)) {
       const username = inputURL.match(ghPagesGroupedRegex)[2];
-      const folders = inputURL.match(ghPagesGroupedRegex)[4];
-      const newURL = `https://www.github.com/${username}${folders}`;
-      console.log(newURL);
+      const folders = inputURL.match(ghPagesGroupedRegex)[5];
+      const newURL = `https://www.github.com/${username}/${folders}`;
       this.setState({ convertedURL: newURL });
     } else if (inputURL.match(ghLinkRegex)) {
-      console.log('GitHub Repo Convert');
       const username = inputURL.match(ghRepoGroupedRegex)[4];
       const folders = inputURL.match(ghRepoGroupedRegex)[5];
       const newURL = `https://${username}.github.io${folders}`;
-      console.log(newURL);
       this.setState({ convertedURL: newURL });
     }
   };
@@ -71,13 +68,15 @@ class LinkConverter extends React.Component {
   };
 
   render() {
+    const { appTitle } = this.props;
+    const { inputURL, convertedURL, allowConvert } = this.state;
     return (
       <div>
         <Typography color="primary" variant="h4" component="h1" gutterBottom>
-          {this.props.appTitle}
+          {appTitle}
         </Typography>
         <Typography color="primary" component="p">
-          Convert between a GitHub Pages and Repo link
+          Convert between a GitHub Pages URL and GitHub Repository URL
         </Typography>
         <Container maxWidth="sm">
           <Box my={4}>
@@ -87,11 +86,10 @@ class LinkConverter extends React.Component {
                   <TextField
                     id="url-input"
                     label="Enter URL"
-                    // placeholder="https://github.com/martink-rsa/github-link-converter"
                     variant="outlined"
                     autoFocus
                     fullWidth
-                    value={this.state.inputURL}
+                    value={inputURL}
                     onChange={this.handleChange}
                   />
                 </Grid>
@@ -101,7 +99,7 @@ class LinkConverter extends React.Component {
                     label="Result"
                     variant="outlined"
                     fullWidth
-                    value={this.state.convertedURL}
+                    value={convertedURL}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -110,19 +108,15 @@ class LinkConverter extends React.Component {
                     variant="contained"
                     color="primary"
                     onClick={this.convertURL}
-                    disabled={!this.state.allowConvert}
+                    disabled={!allowConvert}
                   >
                     Convert URL
                   </Button>
-                  <Link
-                    href={this.state.convertedURL}
-                    target="_blank"
-                    rel="noopener"
-                  >
+                  <Link href={convertedURL} target="_blank" rel="noopener">
                     <Button
                       variant="contained"
                       color="secondary"
-                      disabled={!this.state.allowConvert}
+                      disabled={!allowConvert}
                       onClick={this.openLink}
                     >
                       Convert &amp; Go
