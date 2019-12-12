@@ -1,25 +1,27 @@
 /* eslint-disable no-useless-escape */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+// eslint-disable-next-line object-curly-newline
 import { Paper, TextField, Button, Grid, Link } from '@material-ui/core';
 
 /*
 TEST STRINGS:
 martink-rsa.github.io/library
-martink-rsa.github.io/library/newpage
+martink-rsa.github.io/library/page
 https://martink-rsa.github.io/library
 
 github.com/martink-rsa/library
-github.com/martink-rsa/library/newpage/
+github.com/martink-rsa/library/page/
 https://www.github.com/martink-rsa/library
-https://www.github.com/martink-rsa/library/newpage
+https://www.github.com/martink-rsa/library/page
 */
 
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
-const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github.io)(\/)([a-zA-Z0-9\-\_\/]*)/;
+const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io)(\/)([a-zA-Z0-9\-\_\/]*)/;
 const ghRepoGroupedRegex = /^(https?\:\/\/(www.)?)?(github.com\/)([a-zA-Z0-9\-]*)(\/[a-zA-Z0-9\-\_\/]*)/;
 
 class LinkConverter extends React.Component {
@@ -28,28 +30,27 @@ class LinkConverter extends React.Component {
     this.state = {
       inputURL: '', // Set to empty for default
       convertedURL: '',
-      allowConvert: false // Set to false for default
+      allowConvert: false, // Set to false for default
     };
   }
 
-  inputValidation = inputURL =>
-      ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL);
+  inputValidation = (inputURL) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL);
 
-  handleChange = event => {
+  handleChange = (event) => {
     const {
-      target: { value: inputURL }
+      target: { value: inputURL },
     } = event;
-    this.setState((previousState) => {
-      console.log(previousState.inputURL);
-      return {
-        inputURL: inputURL.trim(),
-        allowConvert: this.inputValidation(inputURL.trim()),
-      };
-    });
+    this.setState(() => ({
+      inputURL: inputURL.trim(),
+      allowConvert: this.inputValidation(inputURL.trim()),
+    }));
   };
 
   convertURL = () => {
-    const inputURL = this.state.inputURL.slice(0);
+    let { inputURL } = this.state;
+    inputURL = inputURL.slice(0);
     if (inputURL.match(ghPagesRegex)) {
       const username = inputURL.match(ghPagesGroupedRegex)[2];
       const folders = inputURL.match(ghPagesGroupedRegex)[5];
@@ -99,29 +100,40 @@ class LinkConverter extends React.Component {
                     label="Result"
                     variant="outlined"
                     fullWidth
+                    disabled={!allowConvert}
                     value={convertedURL}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Button
-                    margin={10}
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     onClick={this.convertURL}
                     disabled={!allowConvert}
                   >
                     Convert URL
                   </Button>
-                  <Link href={convertedURL} target="_blank" rel="noopener">
+                  {allowConvert ? (
+                    <Link href={convertedURL} target="_blank" rel="noopener">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={!allowConvert}
+                        onClick={this.openLink}
+                      >
+                        Convert &amp; Go
+                      </Button>
+                    </Link>
+                  ) : (
                     <Button
                       variant="contained"
-                      color="secondary"
+                      color="primary"
                       disabled={!allowConvert}
                       onClick={this.openLink}
                     >
                       Convert &amp; Go
                     </Button>
-                  </Link>
+                  )}
                 </Grid>
               </Grid>
             </Paper>
@@ -131,5 +143,9 @@ class LinkConverter extends React.Component {
     );
   }
 }
+
+LinkConverter.propTypes = {
+  appTitle: PropTypes.string.isRequired,
+};
 
 export default LinkConverter;

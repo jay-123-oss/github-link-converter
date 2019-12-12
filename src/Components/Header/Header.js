@@ -9,7 +9,7 @@ function Header() {
     <div className="Header">
       <Link
         color="inherit"
-        href="https://material-ui.com/"
+        href="https://github.com/martink-rsa/github-link-converter"
         target="_blank"
         rel="noopener"
       >

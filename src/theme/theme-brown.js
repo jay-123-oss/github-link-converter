@@ -5,16 +5,17 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#61dafb',
+      main: '#a6623f',
+      contrastText: '#fff',
     },
     secondary: {
-      main: '#61dafb',
+      main: '#a1a19a',
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: '#282c34',
+      default: '#322e2f',
     },
   },
   overrides: {
@@ -22,7 +23,12 @@ const theme = createMuiTheme({
       root: {
         padding: '20px 10px',
         marginBottom: '10px',
-        backgroundColor: '#40798c', // 5d737e
+        backgroundColor: '#fff', // 5d737e
+      },
+    },
+    MuiButton: {
+      root: {
+        margin: '5px',
       },
     },
   },

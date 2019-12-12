@@ -5,33 +5,32 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#a6623f',
-      contrastText: '#fff'
+      main: '#61dafb',
     },
     secondary: {
-      main: '#a1a19a'
+      main: '#b5ecfb',
     },
     error: {
-      main: red.A400
+      main: red.A400,
     },
     background: {
-      default: '#322e2f'
-    }
+      default: '#282c34',
+    },
   },
   overrides: {
     MuiPaper: {
       root: {
         padding: '20px 10px',
         marginBottom: '10px',
-        backgroundColor: '#fff' // 5d737e
-      }
+        backgroundColor: '#fff', // 5d737e
+      },
     },
     MuiButton: {
       root: {
-        margin: '5px'
-      }
-    }
-  }
+        margin: '5px',
+      },
+    },
+  },
 });
 
 export default theme;

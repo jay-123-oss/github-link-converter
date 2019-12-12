@@ -1,3 +1,9 @@
 # GitHub Link Converter
 
-Converts a URL back and forth between GitHub Repositories and GitHub Pages.
+Converts a URL back and forth between a GitHub Repository and GitHub Pages link.
+
+## Usage
+
+`npm install`
+
+`npm start`
