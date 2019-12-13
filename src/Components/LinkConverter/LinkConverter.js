@@ -28,8 +28,8 @@ https://www.github.com/martink-rsa/ToDoList/page
 
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
-const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io\/?)([a-zA-Z0-9\-\_\/]*)$/;
-const ghRepoGroupedRegex = /^(https?\:\/\/(www\.)?)?(github.com\/)([a-zA-Z0-9\-]*)\/([a-zA-Z0-9\-\_\/]+)/;
+const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io\/)([a-zA-Z0-9\-\_\/]+)/;
+const ghRepoGroupedRegex = /^(https?\:\/\/(w{3}\.)?)?(github\.com\/)([a-zA-Z0-9\-]*)\/([a-zA-Z0-9\-\_\/]+)/;
 
 class LinkConverter extends React.Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class LinkConverter extends React.Component {
     inputURL = inputURL.slice(0);
     if (inputURL.match(ghPagesRegex)) {
       const username = inputURL.match(ghPagesGroupedRegex)[2];
-      const folders = inputURL.match(ghPagesGroupedRegex)[5];
+      const folders = inputURL.match(ghPagesGroupedRegex)[4];
       const newURL = `https://www.github.com/${username}/${folders}`;
       this.setState({ convertedURL: newURL });
     } else if (inputURL.match(ghLinkRegex)) {
