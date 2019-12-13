@@ -9,20 +9,27 @@ import { Paper, TextField, Button, Grid, Link } from '@material-ui/core';
 
 /*
 TEST STRINGS:
-martink-rsa.github.io/library
-martink-rsa.github.io/library/page
-https://martink-rsa.github.io/library
+martink-rsa.github.io/ToDoList
+martink-rsa.github.io/ToDoList/page
+https://martink-rsa.github.io/ToDoList
 
-github.com/martink-rsa/library
-github.com/martink-rsa/library/page/
-https://www.github.com/martink-rsa/library
-https://www.github.com/martink-rsa/library/page
+github.com
+github.com/
+github.com/martink-rsa
+github.com/martink-rsa/
+github.com/martink-rsa/
+github.com/martink-rsa/ToDoList
+github.com/martink-rsa/ToDoList/page/
+http://github.com/martink-rsa/ToDoList
+https://github.com/martink-rsa/ToDoList
+https://www.github.com/martink-rsa/ToDoList
+https://www.github.com/martink-rsa/ToDoList/page
 */
 
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
-const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io)(\/)([a-zA-Z0-9\-\_\/]*)/;
-const ghRepoGroupedRegex = /^(https?\:\/\/(www.)?)?(github.com\/)([a-zA-Z0-9\-]*)(\/[a-zA-Z0-9\-\_\/]*)/;
+const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io\/?)([a-zA-Z0-9\-\_\/]*)$/;
+const ghRepoGroupedRegex = /^(https?\:\/\/(www\.)?)?(github.com\/)([a-zA-Z0-9\-]*)\/([a-zA-Z0-9\-\_\/]+)/;
 
 class LinkConverter extends React.Component {
   constructor(props) {
@@ -34,9 +41,18 @@ class LinkConverter extends React.Component {
     };
   }
 
-  inputValidation = (inputURL) =>
+  inputValidation = (inputURL) => {
+    console.log(inputURL);
+    console.log(ghPagesGroupedRegex.test(inputURL));
     // eslint-disable-next-line implicit-arrow-linebreak
-    ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL);
+    return (
+      ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL)
+    );
+  };
+
+  /*   inputValidation = (inputURL) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL); */
 
   handleChange = (event) => {
     const {
