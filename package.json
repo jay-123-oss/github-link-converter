@@ -1,6 +1,7 @@
 {
-  "name": "template-cra-1",
+  "name": "github-link-converter",
   "version": "0.1.0",
+  "homepage": "https://martink-rsa.github.io/github-link-converter",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.7.2",
@@ -17,7 +18,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
