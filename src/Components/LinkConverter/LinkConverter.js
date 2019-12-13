@@ -29,7 +29,7 @@ https://www.github.com/martink-rsa/ToDoList/page
 const ghPagesRegex = /github\.io/;
 const ghLinkRegex = /github\.com/;
 const ghPagesGroupedRegex = /^(https?\:\/\/)?([a-zA-Z0-9\-]*)(\.github\.io\/)([a-zA-Z0-9\-\_\/]+)/;
-const ghRepoGroupedRegex = /^(https?\:\/\/(w{3}\.)?)?(github\.com\/)([a-zA-Z0-9\-]*)\/([a-zA-Z0-9\-\_\/]+)/;
+const ghRepoGroupedRegex = /^(https?\:\/\/)?(w{3}\.)?(github\.com\/)([a-zA-Z0-9\-]*)\/([a-zA-Z0-9\-\_\/]+)/;
 
 class LinkConverter extends React.Component {
   constructor(props) {
