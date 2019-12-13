@@ -9,8 +9,11 @@ import { Paper, TextField, Button, Grid, Link } from '@material-ui/core';
 
 /*
 TEST STRINGS:
+martink-rsa.github.io
+martink-rsa.github.io/
 martink-rsa.github.io/ToDoList
 martink-rsa.github.io/ToDoList/page
+http://martink-rsa.github.io/ToDoList
 https://martink-rsa.github.io/ToDoList
 
 github.com
@@ -50,10 +53,6 @@ class LinkConverter extends React.Component {
     );
   };
 
-  /*   inputValidation = (inputURL) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    ghPagesGroupedRegex.test(inputURL) || ghRepoGroupedRegex.test(inputURL); */
-
   handleChange = (event) => {
     const {
       target: { value: inputURL },
@@ -75,7 +74,7 @@ class LinkConverter extends React.Component {
     } else if (inputURL.match(ghLinkRegex)) {
       const username = inputURL.match(ghRepoGroupedRegex)[4];
       const folders = inputURL.match(ghRepoGroupedRegex)[5];
-      const newURL = `https://${username}.github.io${folders}`;
+      const newURL = `https://${username}.github.io/${folders}`;
       this.setState({ convertedURL: newURL });
     }
   };
@@ -93,7 +92,7 @@ class LinkConverter extends React.Component {
           {appTitle}
         </Typography>
         <Typography color="primary" component="p">
-          Convert between a GitHub Pages URL and GitHub Repository URL
+          Convert between GitHub Pages and GitHub Repository links.
         </Typography>
         <Container maxWidth="sm">
           <Box my={4}>
